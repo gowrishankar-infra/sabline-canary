@@ -1,0 +1,8 @@
+# The actions this canary uses, and the Velaris Action's tag: a new Velaris
+# release reaches the Action job as a pull request moving its tag.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: daily

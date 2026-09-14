@@ -1,0 +1,30 @@
+{
+  "schema": "velaris.capabilities/1",
+  "velaris_version": "8.1.1",
+  "date": "2026-09-14",
+  "surface": {
+    "grants": [
+      "io"
+    ],
+    "counts": {}
+  },
+  "programs": [
+    {
+      "file": "discount.vel",
+      "grants": [
+        "io"
+      ],
+      "counts": {},
+      "functions": {
+        "basket_total": [],
+        "charged_per_line": [],
+        "discount_for": [],
+        "line_total": [],
+        "main": ["io"],
+        "not_negative": [],
+        "show": ["io"],
+        "total_after": []
+      }
+    }
+  ]
+}

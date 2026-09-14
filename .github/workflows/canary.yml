@@ -135,12 +135,13 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      # Dependabot moves this to each new release
+      # Dependabot moves this to each new release. velaris.capabilities is
+      # committed here, so the Action's capability ratchet holds discount.vel
+      # to the surface it declares (io).
       - uses: gowrishankar-infra/velaris-lang@v8.1.1
         with:
           files: discount.vel
           sarif: "false"
-          capabilities: "off"
       - name: The canary
         run: python canary.py --name "GitHub Action" --command velaris
 

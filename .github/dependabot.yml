@@ -1,4 +1,4 @@
-# The actions this canary uses, and the Velaris Action's tag: a new Velaris
+# The actions this canary uses, and the Sabline Action's tag: a new Sabline
 # release reaches the Action job as a pull request moving its tag.
 version: 2
 updates:

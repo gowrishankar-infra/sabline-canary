@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
-"""The canary: the newest Velaris release, installed as a user installs it,
+"""The canary: the newest Sabline release, installed as a user installs it,
 runs discount.vel and refuses a program that fetches a URL.
 
-    python canary.py --name "PyPI" --command venv/bin/velaris
-    python canary.py --name "npm" --command "node /path/to/velaris.js"
-    python canary.py --name "Docker" --docker velaris:canary
+    python canary.py --name "PyPI" --command venv/bin/sabline
+    python canary.py --name "npm" --command "node /path/to/sabline.js"
+    python canary.py --name "Docker" --docker sabline:canary
 
 discount.vel must run and print the amounts it always prints. A program
 that fetches a URL must be refused with E310, under the default budget and
@@ -54,7 +54,7 @@ def main(argv: list[str]) -> int:
     how.add_argument("--command")
     how.add_argument("--docker", metavar="IMAGE")
     args = ap.parse_args(argv)
-    work = Path(tempfile.mkdtemp(prefix="velaris-canary-"))
+    work = Path(tempfile.mkdtemp(prefix="sabline-canary-"))
     try:
         shutil.copy2(HERE / "discount.vel", work / "discount.vel")
         (work / "net.vel").write_text(NET, encoding="utf-8")

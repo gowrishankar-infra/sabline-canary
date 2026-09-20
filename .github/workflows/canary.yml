@@ -1,6 +1,6 @@
 name: canary
 
-# The newest Velaris release, as a user gets it, every day: from PyPI, npm,
+# The newest Sabline release, as a user gets it, every day: from PyPI, npm,
 # Docker, the GitHub Action and the standalone executables. Each runs
 # discount.vel and refuses a program that fetches a URL (canary.py). A
 # failure opens an issue in this repository, or comments on the open one.
@@ -29,16 +29,16 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ matrix.python }}
-      - name: pip install "velaris-lang[full]" into a new virtual environment
+      - name: pip install "sabline-lang[full]" into a new virtual environment
         shell: bash
         run: |
           python -m venv venv
           if [ -d venv/Scripts ]; then bin=venv/Scripts; exe=.exe; else bin=venv/bin; exe=; fi
-          "$bin/python$exe" -m pip install "velaris-lang[full]"
-          echo "VELARIS=$bin/velaris$exe" >> "$GITHUB_ENV"
+          "$bin/python$exe" -m pip install "sabline-lang[full]"
+          echo "SABLINE=$bin/sabline$exe" >> "$GITHUB_ENV"
       - name: The canary
         shell: bash
-        run: python canary.py --name "PyPI, ${{ matrix.os }}, Python ${{ matrix.python }}" --command "$VELARIS"
+        run: python canary.py --name "PyPI, ${{ matrix.os }}, Python ${{ matrix.python }}" --command "$SABLINE"
 
   npm:
     name: npm, ${{ matrix.os }}
@@ -61,9 +61,9 @@ jobs:
       - name: The compiler from PyPI, then the package from npm
         shell: bash
         run: |
-          python -m pip install velaris-lang
-          npm install -g velaris-lang
-          echo "WRAPPER=$(npm root -g)/velaris-lang/bin/velaris.js" >> "$GITHUB_ENV"
+          python -m pip install sabline-lang
+          npm install -g sabline-lang
+          echo "WRAPPER=$(npm root -g)/sabline-lang/bin/sabline.js" >> "$GITHUB_ENV"
       - name: The canary
         shell: bash
         run: python canary.py --name "npm, ${{ matrix.os }}" --command "node $WRAPPER"
@@ -82,11 +82,11 @@ jobs:
           python-version: "3.12"
       - name: Build the Dockerfile at the newest release's tag
         run: |
-          tag=$(gh release view --repo gowrishankar-infra/velaris-lang --json tagName --jq .tagName)
+          tag=$(gh release view --repo gowrishankar-infra/sabline-lang --json tagName --jq .tagName)
           echo "newest release: $tag"
-          docker build -t velaris:canary "https://github.com/gowrishankar-infra/velaris-lang.git#$tag"
+          docker build -t sabline:canary "https://github.com/gowrishankar-infra/sabline-lang.git#$tag"
       - name: The canary
-        run: python canary.py --name "Docker image" --docker velaris:canary
+        run: python canary.py --name "Docker image" --docker sabline:canary
 
   binary:
     name: the standalone executable, ${{ matrix.os }}
@@ -94,9 +94,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - {os: ubuntu-latest, asset: velaris-linux}
-          - {os: macos-latest, asset: velaris-macos}
-          - {os: windows-latest, asset: velaris-windows.exe}
+          - {os: ubuntu-latest, asset: sabline-linux}
+          - {os: macos-latest, asset: sabline-macos}
+          - {os: windows-latest, asset: sabline-windows.exe}
     runs-on: ${{ matrix.os }}
     env:
       GH_TOKEN: ${{ github.token }}
@@ -110,7 +110,7 @@ jobs:
       - name: Download it from the newest release, and check its checksum
         shell: bash
         run: |
-          gh release download --repo gowrishankar-infra/velaris-lang \
+          gh release download --repo gowrishankar-infra/sabline-lang \
             --pattern "${{ matrix.asset }}" --pattern "${{ matrix.asset }}.sha256"
           python - "${{ matrix.asset }}" <<'EOF'
           import hashlib, sys
@@ -135,15 +135,19 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      # Dependabot moves this to each new release. velaris.capabilities is
-      # committed here, so the Action's capability ratchet holds discount.vel
-      # to the surface it declares (io).
-      - uses: gowrishankar-infra/velaris-lang@v8.1.1
+      # Dependabot moves this to each new release. The committed baseline is
+      # still velaris.capabilities, under the name it had before 8.6 renamed
+      # the project: this pin is v8.1.1, which was released as Velaris and
+      # looks for that file. Sabline 8.6.0 reads both names, so the file is
+      # renamed when Dependabot moves this pin past v8.6.0. Either way the
+      # Action's capability ratchet holds discount.vel to the surface it
+      # declares (io).
+      - uses: gowrishankar-infra/sabline-lang@v8.1.1
         with:
           files: discount.vel
           sarif: "false"
       - name: The canary
-        run: python canary.py --name "GitHub Action" --command velaris
+        run: python canary.py --name "GitHub Action" --command sabline
 
   report:
     name: an issue when anything failed
@@ -160,7 +164,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          title="canary: the newest Velaris release failed a check"
+          title="canary: the newest Sabline release failed a check"
           number=$(gh issue list --state open --limit 100 --json number,title \
             --jq ".[] | select(.title == \"$title\") | .number" | head -n 1)
           body="A canary run failed: $RUN_URL"

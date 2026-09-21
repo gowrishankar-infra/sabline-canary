@@ -1,7 +1,8 @@
 {
-  "schema": "velaris.capabilities/1",
-  "velaris_version": "8.1.1",
-  "date": "2026-09-14",
+  "schema": "sabline.capabilities/1",
+  "sabline_version": "8.6.0",
+  "velaris_version": "8.6.0",
+  "date": "2026-09-21",
   "surface": {
     "grants": [
       "io"

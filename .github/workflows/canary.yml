@@ -135,14 +135,10 @@ jobs:
       - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
-      # Dependabot moves this to each new release. The committed baseline is
-      # still velaris.capabilities, under the name it had before 8.6 renamed
-      # the project: this pin is v8.1.1, which was released as Velaris and
-      # looks for that file. Sabline 8.6.0 reads both names, so the file is
-      # renamed when Dependabot moves this pin past v8.6.0. Either way the
-      # Action's capability ratchet holds discount.vel to the surface it
-      # declares (io).
-      - uses: gowrishankar-infra/sabline-lang@v8.1.1
+      # Dependabot moves this to each new release. sabline.capabilities is
+      # committed here, so the Action's capability ratchet holds
+      # discount.vel to the surface it declares (io).
+      - uses: gowrishankar-infra/sabline-lang@v8.6.0
         with:
           files: discount.vel
           sarif: "false"

@@ -142,7 +142,7 @@ jobs:
       # renamed when Dependabot moves this pin past v8.6.0. Either way the
       # Action's capability ratchet holds discount.vel to the surface it
       # declares (io).
-      - uses: gowrishankar-infra/sabline-lang@v8.1.1
+      - uses: gowrishankar-infra/sabline-lang@v8.2.1
         with:
           files: discount.vel
           sarif: "false"
